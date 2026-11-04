@@ -75,3 +75,13 @@ gamestate_integration_*.cfg
 *.bak
 __pycache__/
 compat-report*/
+!/cpp/assets/dust2.mesh
+!/cpp/assets/dust2.nav.json
+!/cpp/assets/mirage.mesh
+!/cpp/assets/mirage.nav.json
+!/cpp/assets/inferno.mesh
+!/cpp/assets/inferno.nav.json
+!/cpp/assets/vertigo.mesh
+!/cpp/assets/vertigo.nav.json
+!/cpp/assets/cache.mesh
+!/cpp/assets/cache.nav.json
