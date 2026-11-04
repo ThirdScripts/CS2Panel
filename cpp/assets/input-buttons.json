@@ -1,0 +1,62 @@
+{
+  "listRva": 39211280,
+  "buttons": {
+    "lookatweapon": {
+      "rva": 39319856
+    },
+    "zoom": {
+      "rva": 39319712
+    },
+    "showscores": {
+      "rva": 39319568
+    },
+    "duck": {
+      "rva": 35882224
+    },
+    "jump": {
+      "rva": 35882080
+    },
+    "use": {
+      "rva": 35881936
+    },
+    "right": {
+      "rva": 35881792
+    },
+    "left": {
+      "rva": 35881648
+    },
+    "back": {
+      "rva": 35881504
+    },
+    "forward": {
+      "rva": 35881360
+    },
+    "turnright": {
+      "rva": 35881216
+    },
+    "turnleft": {
+      "rva": 35881072
+    },
+    "attack2": {
+      "rva": 35880928
+    },
+    "attack": {
+      "rva": 35880784
+    },
+    "reload": {
+      "rva": 35880640
+    },
+    "sprint": {
+      "rva": 35880496
+    },
+    "turnup": {
+      "rva": 39206296
+    },
+    "turndown": {
+      "rva": 39206424
+    }
+  },
+  "moduleTimestamp": 1793662616,
+  "moduleSize": 43655168,
+  "clientSha256": "57ee728e15c50881070d847d7516d632d70456e0648d486a53f2528ec53f6ee0"
+}

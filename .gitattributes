@@ -1,0 +1,8 @@
+
+# Raw PPM menu calibration must never undergo newline conversion.
+*.ppm binary
+
+# The compatibility catalog authenticates the exact bytes of these profiles.
+cpp/assets/memory.json -text
+cpp/assets/input-buttons.json -text
+cpp/assets/game-commands.json -text

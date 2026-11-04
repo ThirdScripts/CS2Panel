@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "bundles": [
+    {
+      "version": 2000935,
+      "client_sha256": "ccaf4e4926babc052994502b19ec61198a11008a39dce712921b93dd993be9f5",
+      "engine_sha256": "e8533af07adc3426eac95391cb70804a0a27f8391c03d36f1cfa06f50d901d29",
+      "files": {
+        "memory.json": "cb4f6247d6285249094553fe3a4f2146bcff8d64917dbad69d9df222c9223d09",
+        "input-buttons.json": "9041b32dac06b7f32e3884919262979ede5205b419201833b489ac4a0c1123ce",
+        "game-commands.json": "48d191d471caeb170d9eac8cdd41b94796c80387ce20a1ab5fa2b4396a805e05"
+      },
+      "provenance": "Existing 2000935 recovery; MEMORIKONTUZIYA.md and docs/validation; source commit fd4e725. This is a local approved catalog, not a remote latest-offset feed."
+    },
+    {
+      "version": 2000938,
+      "client_sha256": "08a741030c1e569d8b854c5886a87fcafc21d0d0e2f05dfd380e8a351171501d",
+      "engine_sha256": "42e0549c7314321e1b69c8d60046efe94e0356f54d7a2fb79dd6b993e6e3658b",
+      "files": {
+        "memory.json": "93f01ad57a5668fd39ffeda915255fd9b4d48357145fdde93a1e7d5c8c81c665",
+        "input-buttons.json": "15778e03af4dc2c9d73dddaefc90bca03b6f82a8cdb462485afec7a1b266d6b7",
+        "game-commands.json": "9ef2d5dd1325663534eaa0d998ad5e342de6991aa1ac15e91be2c15a862b60af"
+      },
+      "provenance": "Local 2000938 schema/buttons validation; live movement/yaw/pitch and slot2/slot1 confirmed 2026-10-29. See RECOVERY_2000938.md; automatic purchase remains unconfirmed."
+    },
+    {
+      "version": 2000940,
+      "client_sha256": "57ee728e15c50881070d847d7516d632d70456e0648d486a53f2528ec53f6ee0",
+      "engine_sha256": "a1b682acb5cedf11bed4784b0191a5452e93ee8f3023f95fa11ab3c3676b0fbc",
+      "files": {
+        "memory.json": "670cf7d6a17e2052d49de5e0b625b30ef0e0385d17856a1ebc6ee906eb52f5ee",
+        "input-buttons.json": "77b9e683fcff33914c05e1a600c257b457a4a0024680c4d0ab80550486adca33",
+        "game-commands.json": "4349f469582bbdfaa30c9cc9d7ce69fe854db8d4467a50ec4f47a2c9d1727320"
+      },
+      "provenance": "2000940 independently collected in two client processes with identical profiles. Local match: distance 207.284, yaw 93.1625, pitch 13.7998. Background slot2/slot1 switched Desert Eagle and AK-47 after manual purchase. Automatic purchase not confirmed."
+    }
+  ]
+}

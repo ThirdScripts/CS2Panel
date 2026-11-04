@@ -1,0 +1,68 @@
+cmake_minimum_required(VERSION 3.25)
+project(CS2Panel LANGUAGES CXX)
+include("${CMAKE_CURRENT_LIST_DIR}/../tools/cmake/ShowIncludes.cmake")
+set(CMAKE_CXX_STANDARD 20)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Qml Quick QuickControls2)
+set(CS2N_CORE_ONLY ON)
+add_subdirectory(../cpp navigator-core)
+add_library(navigator_ui STATIC ../cpp/app/native_main.cpp ../cpp/ui/main_window.cpp ../cpp/ui/painter.cpp)
+target_compile_definitions(navigator_ui PRIVATE CS2N_INTEGRATED CS2N_BACKGROUND_DEFAULT)
+target_compile_options(navigator_ui PRIVATE /utf-8 /EHsc)
+target_link_libraries(navigator_ui PUBLIC cs2n_core comctl32 winmm)
+add_executable(CS2Panel WIN32 quick_main.cpp bridge.cpp bridge.h)
+target_link_libraries(CS2Panel PRIVATE navigator_ui)
+add_custom_command(TARGET CS2Panel POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../cpp/assets $<TARGET_FILE_DIR:CS2Panel>/bot/assets)
+qt6_wrap_cpp(PANEL_MOC bridge.h TARGET CS2Panel OPTIONS -DQT_NO_KEYWORDS)
+target_sources(CS2Panel PRIVATE ${PANEL_MOC})
+target_compile_definitions(CS2Panel PRIVATE UNICODE _UNICODE NOMINMAX WIN32_LEAN_AND_MEAN QT_NO_KEYWORDS)
+target_compile_options(CS2Panel PRIVATE /W4 /utf-8 /EHsc)
+target_link_options(CS2Panel PRIVATE /ENTRY:mainCRTStartup)
+target_link_libraries(CS2Panel PRIVATE Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick Qt6::QuickControls2 comctl32 psapi shell32 ole32)
+add_custom_target(panel_qml ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/qml $<TARGET_FILE_DIR:CS2Panel>/qml DEPENDS CS2Panel)
+enable_testing()
+add_executable(SharedManifestTest test_shared_manifest.cpp)
+target_compile_definitions(SharedManifestTest PRIVATE UNICODE _UNICODE NOMINMAX WIN32_LEAN_AND_MEAN)
+target_compile_options(SharedManifestTest PRIVATE /utf-8 /EHsc)
+add_test(NAME shared_manifest COMMAND SharedManifestTest)
+add_test(NAME process_lifecycle COMMAND CS2Panel --self-test)
+add_test(NAME bridge_persistence COMMAND CS2Panel --bridge-test)
+add_test(NAME compatibility COMMAND CS2Panel --compat-test)
+add_test(NAME qml_load COMMAND CS2Panel --qml-test)
+set_tests_properties(qml_load PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+
+add_executable(CS2SessionPilot WIN32 session_pilot.cpp)
+target_compile_definitions(CS2SessionPilot PRIVATE UNICODE _UNICODE NOMINMAX WIN32_LEAN_AND_MEAN)
+target_compile_options(CS2SessionPilot PRIVATE /W4 /utf-8 /EHsc)
+target_link_libraries(CS2SessionPilot PRIVATE advapi32)
+
+add_test(NAME navigator_ui COMMAND CS2Panel --navigator-ui-test)
+
+add_test(NAME gsi_endpoint_lifecycle COMMAND CS2Panel --gsi-endpoint-test)
+
+add_executable(SandboxPathTest test_sandbox_path.cpp)
+target_compile_definitions(SandboxPathTest PRIVATE UNICODE _UNICODE NOMINMAX WIN32_LEAN_AND_MEAN)
+target_compile_options(SandboxPathTest PRIVATE /utf-8 /EHsc)
+add_test(NAME sandbox_path COMMAND SandboxPathTest)
+add_test(NAME panel_regressions COMMAND CS2Panel --panel-regression-test)
+
+add_test(NAME theme_persistence COMMAND CS2Panel --theme-test)
+find_package(Python3 COMPONENTS Interpreter QUIET)
+if(Python3_Interpreter_FOUND)
+ add_test(NAME compatibility_updater COMMAND ${Python3_EXECUTABLE} -m unittest discover
+  -s ${CMAKE_CURRENT_SOURCE_DIR}/../tools/compatibility -p test_*.py)
+else()
+ message(WARNING "Python3 unavailable: compatibility updater tests cannot run")
+endif()
+
+# Refresh maintenance files even when only JSON changed and EXE does not relink.
+add_custom_target(compatibility_tools ALL
+ COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:CS2Panel>/maintenance/compatibility/approved"
+ DEPENDS CS2Panel)
+foreach(name update.py collect_runtime.py schema_profile.py approved-profiles.json Update-Compatibility.ps1 Check-Compatibility.cmd README.md)
+ add_custom_command(TARGET compatibility_tools POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/../tools/compatibility/${name}" "$<TARGET_FILE_DIR:CS2Panel>/maintenance/compatibility/${name}")
+endforeach()
+foreach(name memory.json input-buttons.json game-commands.json)
+ add_custom_command(TARGET compatibility_tools POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_CURRENT_SOURCE_DIR}/../cpp/assets/${name}" "$<TARGET_FILE_DIR:CS2Panel>/maintenance/compatibility/approved/${name}")
+endforeach()
